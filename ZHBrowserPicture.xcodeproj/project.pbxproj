@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		296811F4221AA0F6008079C2 /* ZHBrowseFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 296811F3221AA0F6008079C2 /* ZHBrowseFlowLayout.m */; };
 		29D7715F2217DA71004B6EDC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D7715E2217DA71004B6EDC /* AppDelegate.m */; };
 		29D771622217DA71004B6EDC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D771612217DA71004B6EDC /* ViewController.m */; };
 		29D771652217DA71004B6EDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29D771632217DA71004B6EDC /* Main.storyboard */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		296811F2221AA0F6008079C2 /* ZHBrowseFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZHBrowseFlowLayout.h; sourceTree = "<group>"; };
+		296811F3221AA0F6008079C2 /* ZHBrowseFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZHBrowseFlowLayout.m; sourceTree = "<group>"; };
 		29D7715A2217DA71004B6EDC /* ZHBrowserPicture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZHBrowserPicture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29D7715D2217DA71004B6EDC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		29D7715E2217DA71004B6EDC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 			children = (
 				29D771942217DBFE004B6EDC /* ZHBrowseView.h */,
 				29D771902217DBFE004B6EDC /* ZHBrowseView.m */,
+				296811F2221AA0F6008079C2 /* ZHBrowseFlowLayout.h */,
+				296811F3221AA0F6008079C2 /* ZHBrowseFlowLayout.m */,
 				29D771912217DBFE004B6EDC /* Utils */,
 				29D771952217DBFE004B6EDC /* SubView */,
 			);
@@ -165,8 +170,8 @@
 		29D771952217DBFE004B6EDC /* SubView */ = {
 			isa = PBXGroup;
 			children = (
-				29D771962217DBFE004B6EDC /* ZHBrowseCell.m */,
 				29D771972217DBFE004B6EDC /* ZHBrowseCell.h */,
+				29D771962217DBFE004B6EDC /* ZHBrowseCell.m */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				29D771992217DBFE004B6EDC /* ZHBrowseTool.m in Sources */,
+				296811F4221AA0F6008079C2 /* ZHBrowseFlowLayout.m in Sources */,
 				29D771982217DBFE004B6EDC /* ZHBrowseView.m in Sources */,
 				29D771622217DA71004B6EDC /* ViewController.m in Sources */,
 				29D7719A2217DBFE004B6EDC /* ZHBrowseCell.m in Sources */,

@@ -9,10 +9,11 @@
 #import "ZHBrowseView.h"
 #import "ZHBrowseCell.h"
 #import "ZHBrowseTool.h"
+#import "ZHBrowseFlowLayout.h"
 
 static NSString *_identifier = @"ZHBrowseCell";
 
-#define K_KEY_WINDOW            [UIApplication sharedApplication].keyWindow
+#define K_KEY_WINDOW        [UIApplication sharedApplication].keyWindow
 #define K_SCREEN_BOUNDE     [UIScreen mainScreen].bounds
 #define K_SCREEN_WIDTH      [UIScreen mainScreen].bounds.size.width
 #define K_SCREEN_HEIGHT     [UIScreen mainScreen].bounds.size.height
@@ -47,7 +48,11 @@ static NSString *_identifier = @"ZHBrowseCell";
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [browseView.mainView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    browseView.titleLabel.text = [NSString stringWithFormat:@"%lu/%lu",(unsigned long)index+1,(unsigned long)dataArray.count];
+    ZHBrowseFlowLayout *flowLayout = (ZHBrowseFlowLayout *)browseView.mainView.collectionViewLayout;
+    flowLayout.lastOffset = browseView.mainView.contentOffset;
+    if (dataArray.count > 1) {
+        browseView.titleLabel.text = [NSString stringWithFormat:@"%lu/%lu",(unsigned long)index+1,(unsigned long)dataArray.count];
+    }
     
     UIImageView *tempView = [[UIImageView alloc] init];
     tempView.contentMode = UIViewContentModeScaleAspectFit;
@@ -101,16 +106,12 @@ static NSString *_identifier = @"ZHBrowseCell";
 }
 - (void)setupSubView
 {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(K_SCREEN_WIDTH, K_SCREEN_HEIGHT);
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    layout.minimumLineSpacing = 0;
+    ZHBrowseFlowLayout *flowLayout = [[ZHBrowseFlowLayout alloc] initWithSectionInset:UIEdgeInsetsMake(0, 0, 0, 0) andMiniLineSapce:10 andMiniInterItemSpace:0 andItemSize:CGSizeMake(K_SCREEN_WIDTH, K_SCREEN_HEIGHT)];
 
-    UICollectionView *mainView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, K_SCREEN_WIDTH, K_SCREEN_HEIGHT) collectionViewLayout:layout];
+    UICollectionView *mainView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, K_SCREEN_WIDTH, K_SCREEN_HEIGHT) collectionViewLayout:flowLayout];
     [mainView registerClass:[ZHBrowseCell class] forCellWithReuseIdentifier:_identifier];
     mainView.dataSource = self;
     mainView.delegate = self;
-    mainView.pagingEnabled = YES;
     mainView.hidden = YES;
     mainView.backgroundColor = [UIColor clearColor];
     [self addSubview:mainView];
@@ -187,6 +188,8 @@ static NSString *_identifier = @"ZHBrowseCell";
 - (void)imageViewWillBeginDragging:(UIImageView *)imageView
 {
     self.mainView.scrollEnabled = NO;
+    self.saveButton.hidden = YES;
+    self.titleLabel.hidden = YES;
 }
 - (void)imageViewDragging:(CGFloat)scale imageView:(nonnull UIImageView *)imageView
 {
@@ -199,7 +202,13 @@ static NSString *_identifier = @"ZHBrowseCell";
 }
 - (void)imageViewEndDragging:(CGFloat)scale imageview:(nonnull UIImageView *)imageView
 {
+    UIView *statusBar = [[UIApplication sharedApplication] valueForKey:@"_statusBar"];
+    if (statusBar) {
+        statusBar.alpha = 0.0;
+    }
     self.currentView = imageView;
+    self.saveButton.hidden = NO;
+    self.titleLabel.hidden = NO;
     if (scale < K_DisappearScale) {
         [self.class disappearZHBrowseView];
     }else{

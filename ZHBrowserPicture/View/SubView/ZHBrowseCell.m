@@ -114,6 +114,7 @@
 {
 //    NSLog(@"singleTap");
     if ([self.delegate respondsToSelector:@selector(didClickImage:)]) {
+        [self.scrollView setZoomScale:1.0 animated:NO]; //还原
         [self.delegate didClickImage:self.imageView];
     }
 }
@@ -149,8 +150,10 @@
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if ([self.delegate respondsToSelector:@selector(imageViewWillBeginDragging:)]) {
-        [self.delegate imageViewWillBeginDragging:self.imageView];
+    if (self.doingZoom == NO && self.scrollView.zoomScale == 1 ) {
+        if ([self.delegate respondsToSelector:@selector(imageViewWillBeginDragging:)]) {
+            [self.delegate imageViewWillBeginDragging:self.imageView];
+        }
     }
 }
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -206,13 +209,13 @@
 - (void)endPan
 {
     if (self.moveImage.hidden == NO) {
-        self.scrollView.bounces = NO;
+        self.scrollView.bounces = NO;//解决拖拽结束瞬间抖动
         [UIView animateWithDuration:0.25 animations:^{
             [self.moveImage setCenter:self.scrollView.center];
             self.moveImage.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished) {
             self.imageView.hidden = NO;
-            self.moveImage.hidden = YES;
+            self.moveImage.hidden = YES;//解决拖拽结束瞬间抖动
             self.scrollView.bounces = YES;
         }];
         if ([self.delegate respondsToSelector:@selector(imageViewEndDragging:imageview:)]) {
