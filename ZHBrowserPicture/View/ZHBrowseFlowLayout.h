@@ -10,7 +10,6 @@
 
 @interface ZHBrowseFlowLayout : UICollectionViewFlowLayout
 - (instancetype)initWithSectionInset:(UIEdgeInsets)insets andMiniLineSapce:(CGFloat)miniLineSpace andMiniInterItemSpace:(CGFloat)miniInterItemSpace andItemSize:(CGSize)itemSize;
-@property (nonatomic, assign) CGPoint lastOffset;/**记录上次滑动停止时contentOffset值*/
 @property (nonatomic, assign) BOOL scrollAnimation;/**是否有分页动画*/
 @end
 

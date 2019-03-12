@@ -42,6 +42,7 @@
     scrollView.alwaysBounceHorizontal = YES;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;
+//    scrollView.directionalLockEnabled = YES;
     scrollView.delegate = self;
     scrollView.backgroundColor = [UIColor clearColor];
     if (@available(iOS 11.0, *)){

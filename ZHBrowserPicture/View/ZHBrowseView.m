@@ -29,7 +29,7 @@ static NSString *_identifier = @"ZHBrowseCell";
 @property (nonatomic, weak) UIImageView *currentView;
 @property (nonatomic, weak) UILabel *titleLabel;
 @property (nonatomic, weak) UIButton *saveButton;
-@property (nonatomic,strong) NSArray *dataArray;
+@property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, assign) CGRect originalFrame;
 
 @end
@@ -47,9 +47,9 @@ static NSString *_identifier = @"ZHBrowseCell";
     browseView.originalFrame = frame;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    [browseView.mainView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    ZHBrowseFlowLayout *flowLayout = (ZHBrowseFlowLayout *)browseView.mainView.collectionViewLayout;
-    flowLayout.lastOffset = browseView.mainView.contentOffset;
+    [browseView.mainView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+//    ZHBrowseFlowLayout *flowLayout = (ZHBrowseFlowLayout *)browseView.mainView.collectionViewLayout;
+//    flowLayout.lastOffset = browseView.mainView.contentOffset;
     if (dataArray.count > 1) {
         browseView.titleLabel.text = [NSString stringWithFormat:@"%lu/%lu",(unsigned long)index+1,(unsigned long)dataArray.count];
     }
@@ -106,13 +106,14 @@ static NSString *_identifier = @"ZHBrowseCell";
 }
 - (void)setupSubView
 {
-    ZHBrowseFlowLayout *flowLayout = [[ZHBrowseFlowLayout alloc] initWithSectionInset:UIEdgeInsetsMake(0, 0, 0, 0) andMiniLineSapce:10 andMiniInterItemSpace:0 andItemSize:CGSizeMake(K_SCREEN_WIDTH, K_SCREEN_HEIGHT)];
-
-    UICollectionView *mainView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, K_SCREEN_WIDTH, K_SCREEN_HEIGHT) collectionViewLayout:flowLayout];
+    ZHBrowseFlowLayout *flowLayout = [[ZHBrowseFlowLayout alloc] initWithSectionInset:UIEdgeInsetsMake(0, 0, 0, 10) andMiniLineSapce:10 andMiniInterItemSpace:0 andItemSize:CGSizeMake(K_SCREEN_WIDTH, K_SCREEN_HEIGHT)];
+    flowLayout.scrollAnimation = YES;
+    UICollectionView *mainView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, K_SCREEN_WIDTH + 10, K_SCREEN_HEIGHT) collectionViewLayout:flowLayout];
     [mainView registerClass:[ZHBrowseCell class] forCellWithReuseIdentifier:_identifier];
     mainView.dataSource = self;
     mainView.delegate = self;
     mainView.hidden = YES;
+    mainView.pagingEnabled = YES;
     mainView.backgroundColor = [UIColor clearColor];
     [self addSubview:mainView];
     self.mainView = mainView;

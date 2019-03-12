@@ -19,8 +19,7 @@
 /*初始化部分*/
 - (instancetype)initWithSectionInset:(UIEdgeInsets)insets andMiniLineSapce:(CGFloat)miniLineSpace andMiniInterItemSpace:(CGFloat)miniInterItemSpace andItemSize:(CGSize)itemSize
 {
-    self = [self init];
-    if (self) {
+    if (self = [self init]) {
         //基本尺寸/边距设置
         self.sectionInsets = insets;
         self.miniLineSpace = miniLineSpace;
@@ -31,9 +30,7 @@
 }
 - (instancetype)init
 {
-    self = [super init];
-    if (self) {
-        _lastOffset = CGPointZero;
+    if ([super init]) {
     }
     return self;
 }
@@ -54,70 +51,7 @@
      */
     self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
 }
-/**
- * 这个方法的返回值，就决定了collectionView停止滚动时的偏移量
- */
--(CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
-{
-    CGFloat pageSpace = [self stepSpace];//计算分页步距
-    CGFloat offsetMax = self.collectionView.contentSize.width - self.collectionView.bounds.size.width;
-    CGFloat offsetMin = 0;
-    /*修改之前记录的位置，如果小于最小contentsize或者大于最大contentsize则重置值*/
-    if (_lastOffset.x < offsetMin)
-    {
-        _lastOffset.x = offsetMin;
-    }else if (_lastOffset.x >offsetMax)
-    {
-        _lastOffset.x = offsetMax;
-    }
-    
-    CGFloat offsetForCurrentPointX = ABS(proposedContentOffset.x - _lastOffset.x);//目标位移点距离当前点的距离绝对值
-    BOOL direction = (proposedContentOffset.x - _lastOffset.x) > 0;//判断当前滑动方向,手指向左滑动：YES；手指向右滑动：NO
-    CGFloat ratio = 8.0;//滑动部分占整个cell宽度的比例
-    if (offsetForCurrentPointX > pageSpace/ratio
-        && _lastOffset.x >= offsetMin
-        && _lastOffset.x <= offsetMax)
-    {
-        NSInteger pageFactor = 1;//分页因子，用于计算滑过的cell个数, 默认为：1
-        
-        /*//这里是单个分页不需要一次滑动多个cell
-         CGFloat velocityX = velocity.x;
-         if (velocityX != 0)
-         {
-         //滑动
-         pageFactor = ABS(velocityX);//速率越快，cell滑过数量越多
-         }else
-         {
-         //拖动 没有速率，则计算：位移差/默认步距=分页因子
-         
-         pageFactor = ABS(offsetForCurrentPointX/pageSpace);
-         }
-         
-         //设置pageFactor上限为1, 防止滑动速率过大，导致翻页过多
-         pageFactor = 1;
-         */
-        
-        CGFloat pageOffsetX = pageSpace*pageFactor;
-        proposedContentOffset = CGPointMake(_lastOffset.x + (direction?pageOffsetX:-pageOffsetX), proposedContentOffset.y);
-    }else
-    {
-        /*滚动距离，小于翻页步距一半，则不进行翻页操作*/
-        proposedContentOffset = CGPointMake(_lastOffset.x, _lastOffset.y);
-    }
-    
-    //记录当前最新位置
-    _lastOffset.x = proposedContentOffset.x;
-    return proposedContentOffset;
-    
-}
 
-/**
- *计算每滑动一页的距离：步距
- */
--(CGFloat)stepSpace
-{
-    return self.eachItemSize.width + self.miniLineSpace;
-}
 #pragma mark - 动画效果
 /**
  * 当collectionView的显示范围发生改变的时候，是否需要重新刷新布局
